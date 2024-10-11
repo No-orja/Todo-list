@@ -15,6 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 //Other 
 import { useContext, useState } from 'react';
 import { ToDosContext } from '../context/ToDoContext';
+import { ToastContext } from '../context/ToastContext';
 
 export default function Todo({ toDo, handelClicked, handelDClicked }) {
   const { toDos, setToDos } = useContext(ToDosContext);
@@ -22,6 +23,7 @@ export default function Todo({ toDo, handelClicked, handelDClicked }) {
   const [updatedToDo, setUpdatedToDo] = useState({ title: toDo.Title, Details: toDo.body });
 
   console.log(toDos); 
+  const { showHide } = useContext(ToastContext);
 
   function handelCheckClick(toDoId) {
     const updatedToDos = toDos.map((t) => {
@@ -39,16 +41,19 @@ export default function Todo({ toDo, handelClicked, handelDClicked }) {
   function handelDeleteClicked() {
     const newToDo = toDos.filter((t) => t.id !== toDo.id);
     setToDos(newToDo);
+    showHide("The message is deleted")
     localStorage.setItem("toDos", JSON.stringify(newToDo));
 
   }
 
   function handelEditClose() {
     setShowUpdateDialog(false);
+    
   }
   
   function handelEditClicked() {
     setShowUpdateDialog(true);
+    
   }
 
   function handelUpdateConfirm() {
@@ -62,7 +67,7 @@ export default function Todo({ toDo, handelClicked, handelDClicked }) {
     setToDos(updatedToDos);
     setShowUpdateDialog(false);
     localStorage.setItem("toDos", JSON.stringify(updatedToDos));
-
+    showHide("The message is edited")
   }
 
 
@@ -74,7 +79,7 @@ export default function Todo({ toDo, handelClicked, handelDClicked }) {
         onClose={handelEditClose}
         PaperProps={{
           style: {
-            width: '100vh', // Set the height to 100vh
+            width: '100vh', 
             display: 'flex',
             flexDirection: 'column',
             background: "rgb(55 59 106)",

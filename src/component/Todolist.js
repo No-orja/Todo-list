@@ -17,15 +17,17 @@ import { useState , useEffect , useMemo} from 'react';
 import { useContext } from 'react'; 
 import { v4 as idv4 } from 'uuid';
 import {ToDosContext} from '../context/ToDoContext'
+import {ToastContext}from '../context/ToastContext'
 
-
+console.log(ToastContext)
 export default function ToDoList() {
 
+  const { showHide } = useContext(ToastContext);
   const {toDos,setToDos} = useContext(ToDosContext)
   const [titleInput, setTitleInput] = useState("");
   const [displayedToDosType,setDisplayedToDosType] = useState("all")
 
-
+//عشان ما يصير ريريندير بكل مرة نكتب او نعمل اشي ما يخص الcomplete
   //USE MEMO:
   const completedToDos = useMemo(()=>{
      return toDos.filter((t)=>{
@@ -34,9 +36,11 @@ export default function ToDoList() {
   },[toDos])
 
   const notCompletedToDos = useMemo(()=>{
-      return toDos.filter((t)=>{
+    return toDos.filter((t)=>{
       return !t.isDone 
+      
     })
+    
   },[toDos])
 
  
@@ -76,10 +80,11 @@ export default function ToDoList() {
       details: "",
       isDone: false
     };
-
-    const updatedToDos = [...toDos, newToDo]
+  
+    const updatedToDos = [...toDos, newToDo];
     setToDos(updatedToDos);
     localStorage.setItem("toDos", JSON.stringify(updatedToDos));
+    showHide("The task is added"); 
     setTitleInput("");
   }
 
@@ -102,7 +107,7 @@ export default function ToDoList() {
             borderRadius: '4px', // Rounded edges for the scrollbar thumb
           },
           '&::-webkit-scrollbar-thumb:hover': {
-            backgroundColor: '#5a54b4', // Color when hovering over the scrollbar
+            backgroundColor: '#5a54b4',
           },
         }}
       >

@@ -3,32 +3,20 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
-export default function SimpleSnackbar() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
+export default function SimpleSnackbar({open,message}) {
 
   const action = (
     <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
+      <Button color="secondary" size="small">
         UNDO
       </Button>
       <IconButton
         size="small"
         aria-label="close"
         color="inherit"
-        onClick={handleClose}
       >
         <CloseIcon fontSize="small" />
       </IconButton>
@@ -37,14 +25,17 @@ export default function SimpleSnackbar() {
 
   return (
     <div>
-      <Button onClick={handleClick}>Open Snackbar</Button>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Note archived"
-        action={action}
-      />
+      <Stack sx={{ width: '100%' }} spacing={2}>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          message="Note archived"
+          action={action}
+        />
+        <Alert severity="success">
+          {message}
+        </Alert>
+      </Stack>
     </div>
   );
 }
